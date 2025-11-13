@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool canTransform(string s1, string s2) {
+    int n = s1.length();
+    int m = s2.length();
+    
+    bool dp[105][105];  // assuming max length ≤ 100
+    memset(dp, false, sizeof(dp));
+    
+    dp[0][0] = true;
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= m; j++) {
+            char c1 = s1[i - 1];
+            
+            // Case 1: delete lowercase letter
+            if (islower(c1) && dp[i - 1][j])
+                dp[i][j] = true;
+            
+            // Case 2: match uppercase (directly or after converting)
+            if (j > 0 && toupper(c1) == s2[j - 1] && dp[i - 1][j - 1])
+                dp[i][j] = true;
+        }
+    }
+
+    return dp[n][m];
+}
+
+int main() {
+    string s1, s2;
+    cout << "Enter s1: ";
+    cin >> s1;
+    cout << "Enter s2: ";
+    cin >> s2;
+
+    if (canTransform(s1, s2))
+        cout << "YES, it is possible to transform." << endl;
+    else
+        cout << "NO, it is not possible to transform." << endl;
+
+    return 0;
+}
